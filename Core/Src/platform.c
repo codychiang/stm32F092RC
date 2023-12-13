@@ -19,13 +19,15 @@ void PlatformInitialize()
 
 void InitializeTickTimer()
 {
+  RCC->APB1ENR |= RCC_APB1ENR_TIM2EN;
+
   /* Disable */
   TIM2->CR1 = 0x00000000;
 
-  /* SystemCoreClock is 180MHz. */
-  /* Prescaler - 180 gives 1us resolution */
+  /* SystemCoreClock is 48MHz. */
+  /* Prescaler - 48 gives 1us resolution */
   uint32_t pclk1Freq = HAL_RCC_GetPCLK1Freq();
-  TIM2->PSC = (pclk1Freq*2/1000000)-1;
+  TIM2->PSC = (pclk1Freq/1000000)-1;
 
   /* Start the count at the end.  Certain registers (PSC,ARR,...) are */
   /* "shadowed" and only get updated on a rollover or other event. */
